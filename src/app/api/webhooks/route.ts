@@ -4,7 +4,10 @@ import createUser from "#/server";
 import { clerkClient } from "@clerk/nextjs/server";
 export async function POST(req: NextRequest) {
   try {
+    console.log("[Webhook] Request received");
+
     const evt = await verifyWebhook(req);
+    console.log("[Webhook] Event type:", evt.type);
 
     if (evt.type === "user.created") {
       const {
@@ -24,8 +27,13 @@ export async function POST(req: NextRequest) {
         firstname: first_name,
         lastname: last_name,
       };
+      console.log("[Webhook] Parsed user data:", user);
+
       const newUser = await createUser(user);
+
       if (!newUser) {
+        console.error("[Webhook] DB save failed");
+
         return NextResponse.json({
           success: false,
           message: "User Created Unsuccessful",
@@ -33,14 +41,17 @@ export async function POST(req: NextRequest) {
         });
       }
 
+      console.log("[Webhook] Saving userId to Clerk metadata");
+
       const client =
         typeof clerkClient === "function" ? await clerkClient() : clerkClient;
 
-      client.users.updateUserMetadata(id, {
+      await client.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
         },
       });
+
       return NextResponse.json({
         success: true,
         data: newUser,
