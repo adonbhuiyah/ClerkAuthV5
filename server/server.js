@@ -1,5 +1,5 @@
-import { User } from "#/models/UserModel";
-import connectDB from "./db/db";
+import User from "./models/UserModel";
+import connectDB from "./database/db";
 import express from "express";
 
 const app = express();
