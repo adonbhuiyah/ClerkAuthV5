@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
           userId: newUser._id,
         },
       });
-      NextResponse.json({
+      return NextResponse.json({
         success: true,
         data: newUser,
         message: "User has created successful",
