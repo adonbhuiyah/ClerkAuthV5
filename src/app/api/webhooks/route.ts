@@ -24,22 +24,24 @@ export async function POST(req: NextRequest) {
         firstname: first_name,
         lastname: last_name,
       };
-      const isUserCreated = createUser(user);
-      if (!isUserCreated) {
+      const newUser = createUser(user);
+      if (!newUser) {
         return NextResponse.json({
           success: false,
           message: "User Created Unsuccessful",
           status: 400,
         });
       }
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: isUserCreated._id,
-        },
-      });
+
+    const client = typeof clerkClient === "function" ? await clerkClient() : clerkClient;
+    client.users.updateUserMetadata(id,{
+      publicMetadata:{
+        userId:newUser._id;
+      }
+    })
       NextResponse.json({
         success: true,
-        data: isUserCreated,
+        data: newUser,
         message: "User has created successful",
         status: 201,
       });

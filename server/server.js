@@ -1,4 +1,4 @@
-import { User } from "@clerk/nextjs/server";
+import { User } from "#/models/UserModel";
 import connectDB from "./db/db";
 import express from "express";
 

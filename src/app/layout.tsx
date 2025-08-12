@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import {
-  ClerkProvider,
-  ClerkLoaded,
-  ClerkLoading,
-  SignedOut,
-  RedirectToSignIn,
-} from "@clerk/nextjs";
+import { ClerkProvider, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Navbar from "@/components/Navbar";
 import Loader from "@/components/Loader";
