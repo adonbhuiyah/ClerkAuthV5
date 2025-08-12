@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         firstname: first_name,
         lastname: last_name,
       };
-      const newUser = createUser(user);
+      const newUser = await createUser(user);
       if (!newUser) {
         return NextResponse.json({
           success: false,
@@ -33,12 +33,14 @@ export async function POST(req: NextRequest) {
         });
       }
 
-    const client = typeof clerkClient === "function" ? await clerkClient() : clerkClient;
-    client.users.updateUserMetadata(id,{
-      publicMetadata:{
-        userId:newUser._id;
-      }
-    })
+      const client =
+        typeof clerkClient === "function" ? await clerkClient() : clerkClient;
+
+      client.users.updateUserMetadata(id, {
+        publicMetadata: {
+          userId: newUser._id,
+        },
+      });
       NextResponse.json({
         success: true,
         data: newUser,
